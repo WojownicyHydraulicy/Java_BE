@@ -1,6 +1,7 @@
 package org.bartoszwojcik.hydropol.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bartoszwojcik.hydropol.dto.user.UserDto;
 import org.bartoszwojcik.hydropol.dto.user.register.UserRegisterRequest;
@@ -14,6 +15,7 @@ import org.bartoszwojcik.hydropol.model.enums.UserRole;
 import org.bartoszwojcik.hydropol.repository.city.CityRepository;
 import org.bartoszwojcik.hydropol.repository.employee.EmployeeRepository;
 import org.bartoszwojcik.hydropol.repository.user.UserRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -107,6 +109,13 @@ public class UserServiceImpl implements UserService {
         );
         userRepository.updateCity(user.getId(), city.getId());
         return city.getName() + " from " + city.getCountry() + " added to " + user.getUsername();
+    }
+
+    @Override
+    public List<UserDto> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable).stream()
+                .map(userMapper::toDto)
+                .toList();
     }
 
     private User getUser(UserRegisterRequest userRegisterRequest) {
