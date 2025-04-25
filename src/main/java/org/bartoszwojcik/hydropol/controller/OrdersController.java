@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrdersController {
     private final OrderService orderService;
 
-    @GetMapping
+    // GET /orders/all
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderDto> getAllOrders(Pageable pageable) {
         return orderService.findAll(pageable);

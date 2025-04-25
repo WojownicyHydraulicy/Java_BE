@@ -21,20 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class CitiesController {
     private final CityService cityService;
 
-    @DeleteMapping(value = "/{cityName}")
+    // DELETE /cities/name/{cityName}
+    @DeleteMapping("/name/{cityName}")
     @ResponseStatus(HttpStatus.OK)
     public Object deleteCity(@PathVariable String cityName) {
         return cityService.deleteCity(cityName);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.OK)
+    // POST /cities/add
+    @PostMapping("/add")
     public CityDto addCity(@RequestBody CityDto cityDto) {
         return cityService.addCity(cityDto);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
+    // GET /cities/all
+    @GetMapping("/all")
     public List<CityDto> findAll(Pageable pageable) {
         return cityService.findAll(pageable);
     }

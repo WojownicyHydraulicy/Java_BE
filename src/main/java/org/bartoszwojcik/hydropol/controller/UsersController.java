@@ -19,27 +19,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersController {
     private final UserService userService;
 
-    @PutMapping(value = "/{username}/promotion")
+    // PUT /users/{username}/promote
+    @PutMapping("/{username}/promote")
     //@PreAuthorize("hasAnyAuthority('OWNER')")
     @ResponseStatus(HttpStatus.OK)
     public UserDto increaseUserRole(@PathVariable String username) {
         return userService.increaseRole(username);
     }
 
-    @PutMapping(value = "/{username}/degrade")
+    // PUT /users/{username}/demote
+    @PutMapping("/{username}/demote")
     @ResponseStatus(HttpStatus.OK)
     public UserDto decreaseUserRole(@PathVariable String username) {
         return userService.decreaseRole(username);
     }
 
-    @PutMapping(value = "/{username}/city/{cityName}")
+    // PUT /users/{username}/assign-city/{cityName}
+    @PutMapping("/{username}/assign-city/{cityName}")
     @ResponseStatus(HttpStatus.OK)
     public String setCity(@PathVariable String username,
                        @PathVariable String cityName) {
         return userService.setCity(username, cityName);
     }
 
-    @GetMapping
+    // GET /users/all
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<UserDto> getAllUsers(Pageable pageable) {
         return userService.findAll(pageable);

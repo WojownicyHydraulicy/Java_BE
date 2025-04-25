@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmployeeController {
     private final EmployeeService employeeService;
 
-    @GetMapping
+    // GET /employees/all
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeDto> getAllEmployees(Pageable pageable) {
         return employeeService.findAll(pageable);
