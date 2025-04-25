@@ -7,8 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repo
       - uses: actions/checkout@v2
-      - name: Set up JDK 21
+
+      - name: Set up JDK 21 with cache
         uses: actions/setup-java@v2
         with:
           java-version: '21'
