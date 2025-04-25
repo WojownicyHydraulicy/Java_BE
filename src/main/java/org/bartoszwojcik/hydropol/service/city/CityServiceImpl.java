@@ -1,10 +1,12 @@
 package org.bartoszwojcik.hydropol.service.city;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bartoszwojcik.hydropol.dto.city.CityDto;
 import org.bartoszwojcik.hydropol.mapper.CityMapper;
 import org.bartoszwojcik.hydropol.repository.city.CityRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +32,13 @@ public class CityServiceImpl implements CityService {
                        cityMapper.toModel(cityDto)
                 )
         );
+    }
+
+    @Override
+    public List<CityDto> findAll(Pageable pageable) {
+        return cityRepository.findAll(pageable).stream()
+                .map(cityMapper::toDto)
+                .toList();
     }
 
 }
