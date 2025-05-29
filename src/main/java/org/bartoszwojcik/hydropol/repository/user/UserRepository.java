@@ -1,7 +1,9 @@
 package org.bartoszwojcik.hydropol.repository.user;
 
+import java.util.List;
 import java.util.Optional;
 import org.bartoszwojcik.hydropol.model.classes.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -19,8 +21,10 @@ public interface UserRepository extends JpaRepository<User, Long>,
 
     Optional<User> findUserByUsername(String username);
 
+    List<User> findByUsername(String username, Pageable pageable);
+
     @Modifying
     @Transactional
-    @Query("UPDATE User u SET u.city.id = :cityId WHERE u.id = :id")
+    @Query("UPDATE User u SET u.citiesId.id = :cityId WHERE u.id = :id")
     int updateCity(Long id, Long cityId);
 }

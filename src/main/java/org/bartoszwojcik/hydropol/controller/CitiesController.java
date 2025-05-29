@@ -6,6 +6,7 @@ import org.bartoszwojcik.hydropol.dto.city.CityDto;
 import org.bartoszwojcik.hydropol.service.city.CityService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/cities")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:8090")
 public class CitiesController {
     private final CityService cityService;
 

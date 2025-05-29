@@ -18,4 +18,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>,
     @Transactional
     @Query("UPDATE Employee e SET e.workerRole = :role WHERE e.user.id = :id")
     int updateByUserId(Long id, UserRole role);
+
 }

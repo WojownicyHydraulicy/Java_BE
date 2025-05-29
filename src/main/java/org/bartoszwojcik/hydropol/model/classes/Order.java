@@ -3,6 +3,8 @@ package org.bartoszwojcik.hydropol.model.classes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,10 +42,16 @@ public class Order {
 
     private String description;
 
-    @Column(name = "assigned_to")
-    private String assignedTo;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User assignedTo;
 
     @Column(name = "created_date")
     private String createdDate;
+
+    @Column(name = "photo_url")
+    private String photoUrl;
+
+    private String price;
 
 }
