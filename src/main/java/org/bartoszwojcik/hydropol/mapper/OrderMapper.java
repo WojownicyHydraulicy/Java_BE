@@ -11,10 +11,12 @@ public interface OrderMapper {
 
     @Mapping(target = "postCode", source = "postCode")
     @Mapping(target = "houseNr", source = "houseNr")
+    @Mapping(target = "assignedTo", source = "assignedTo.id")
     OrderDto toDto(Order order);
 
     @Mapping(target = "postCode", source = "postCode")
     @Mapping(target = "houseNr", source = "houseNr")
+    @Mapping(target = "assignedTo", ignore = true)
     Order toEntity(OrderDto orderDto);
 }
 

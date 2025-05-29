@@ -63,7 +63,9 @@ public class User implements UserDetails {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cities_id", referencedColumnName = "id")
-    private City city;
+    private City citiesId;
+
+    private String city;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
