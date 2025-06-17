@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8090")
+@CrossOrigin(origins = "*")
 public class AuthenticationController {
     private final UserService userService;
     private final AuthenticationService authenticationService;

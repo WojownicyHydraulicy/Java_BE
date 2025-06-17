@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/cities")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8090")
+@CrossOrigin(origins = "*")
 public class CitiesController {
     private final CityService cityService;
 

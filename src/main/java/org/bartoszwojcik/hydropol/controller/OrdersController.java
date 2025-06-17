@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8090")
+@CrossOrigin(origins = "*")
 public class OrdersController {
     private final OrderService orderService;
 

@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(
                 passwordEncoder.encode(userRegisterRequest.getPassword())
         );
-
+        user.setCity(userRegisterRequest.getCity());
         user.setRole(USER_ROLE);
         return user;
     }

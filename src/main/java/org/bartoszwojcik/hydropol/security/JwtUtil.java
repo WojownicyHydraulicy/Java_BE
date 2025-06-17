@@ -24,11 +24,10 @@ public class JwtUtil {
 
     public String generateToken(String email) {
         return Jwts.builder()
-                // .subject(email)
                 .claim("email", email)
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .signWith(secret)
+                .setHeaderParam("typ", "JWT")
                 .compact();
     }
 
