@@ -20,4 +20,13 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderMapper::toDto)
                 .toList();
     }
+
+    @Override
+    public List<OrderDto> findInProgress(Pageable pageable) {
+        return orderRepository.findByOrderStatus("In progress",pageable)
+                .stream()
+                .map(orderMapper::toDto)
+                .toList();
+    }
+
 }

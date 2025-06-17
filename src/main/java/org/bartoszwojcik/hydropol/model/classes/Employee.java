@@ -36,4 +36,5 @@ public class Employee {
     @Column(nullable = false)
     private UserRole workerRole;
 
+    private String city;
 }
