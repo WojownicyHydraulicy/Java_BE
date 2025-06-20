@@ -14,24 +14,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller for managing employee-related endpoints.
+ * <p>
+ * Provides endpoints for retrieving all employees and orders associated with a specific employee.
+ * </p>
+ */
 @RestController
 @RequestMapping("/employees")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class EmployeeController {
+
+    /** Service handling employee business logic */
     private final EmployeeService employeeService;
 
-    // GET /employees/all
+    /**
+     * Retrieves a paginated list of all employees.
+     *
+     * @param pageable pagination information
+     * @return list of employees as DTOs
+     */
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<EmployeeDto> getAllEmployees(Pageable pageable) {
         return employeeService.findAll(pageable);
     }
 
-    // GET /employees/all
+    /**
+     * Retrieves a paginated list of orders for a specific employee identified by username.
+     *
+     * @param username the username of the employee
+     * @param pageable pagination information
+     * @return list of orders associated with the employee
+     */
     @GetMapping("/all/{username}/orders")
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDto> getAllEmployees(@PathVariable String username, Pageable pageable) {
+    public List<OrderDto> getEmployeeOrders(@PathVariable String username, Pageable pageable) {
         return employeeService.findEmployeeOrders(username, pageable);
     }
 }

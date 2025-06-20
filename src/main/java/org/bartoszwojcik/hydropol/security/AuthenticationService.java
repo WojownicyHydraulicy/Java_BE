@@ -11,13 +11,27 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * Serwis odpowiedzialny za uwierzytelnianie użytkowników.
+ * Realizuje proces logowania, generuje token JWT dla poprawnie uwierzytelnionych użytkowników.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
 
+    /**
+     * Uwierzytelnia użytkownika na podstawie danych logowania.
+     * Wykorzystuje mechanizm Spring Security do weryfikacji poprawności loginu i hasła.
+     * Po pomyślnym uwierzytelnieniu generuje token JWT na podstawie adresu email użytkownika.
+     *
+     * @param userLoginRequest DTO zawierające email i hasło użytkownika
+     * @return DTO zawierające token JWT
+     * @throws UsernameNotFoundException gdy nie uda się znaleźć użytkownika w bazie
+     */
     public UserLoginResponseDto authenticate(UserLoginRequest userLoginRequest) {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -31,5 +45,4 @@ public class AuthenticationService {
         String token = jwtUtil.generateToken(user.getEmail());
         return new UserLoginResponseDto(token);
     }
-    
 }
