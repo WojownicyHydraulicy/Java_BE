@@ -2,29 +2,18 @@ package org.bartoszwojcik.hydropol.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = FieldMatchValidator.class)
-@Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
+@Documented
+@Constraint(validatedBy = PasswordConstraintValidator.class)
+@Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FieldMatch {
-
-    String message() default "Fields do not match";
-
+public @interface ValidPassword {
+    String message() default "Hasło nie spełnia wymagań bezpieczeństwa";
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
-
-    String first();
-
-    String second();
-
-    @Target({ ElementType.TYPE, ElementType.ANNOTATION_TYPE })
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface List {
-        FieldMatch[] value();
-    }
 }

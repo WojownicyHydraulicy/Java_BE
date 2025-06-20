@@ -1,7 +1,7 @@
 package org.bartoszwojcik.hydropol.annotation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.apache.commons.beanutils.BeanUtils;
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
