@@ -19,6 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * @brief Implementation of UserService interface providing user management operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -29,6 +32,13 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * @brief Registers a new user.
+     *
+     * @param userRegisterRequest Data transfer object containing registration info.
+     * @return Response DTO containing registration result.
+     * @throws RegistrationException if user with the same email already exists.
+     */
     @Override
     public UserRegisterResponseDto register(UserRegisterRequest userRegisterRequest) {
         checkIfUserExist(userRegisterRequest);
@@ -38,6 +48,14 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    /**
+     * @brief Increases the role of the user (USER -> WORKER -> OWNER).
+     * Creates Employee entity if role changes to WORKER.
+     *
+     * @param username Username of the user to upgrade.
+     * @return Updated user DTO.
+     * @throws EntityNotFoundException if user does not exist.
+     */
     @Override
     public UserDto increaseRole(String username) {
         User user = userRepository.findUserByUsername(username).orElseThrow(
@@ -56,12 +74,17 @@ public class UserServiceImpl implements UserService {
                 );
             }
         }
-
         return userMapper.toDto(
                 userRepository.save(user)
         );
     }
 
+    /**
+     * @brief Creates a new Employee entity for a given user.
+     *
+     * @param user User for whom to create Employee.
+     * @return New Employee entity.
+     */
     private static Employee getEmployee(User user) {
         Employee employee = new Employee();
         employee.setUser(user);
@@ -70,6 +93,14 @@ public class UserServiceImpl implements UserService {
         return employee;
     }
 
+    /**
+     * @brief Decreases the role of the user (OWNER -> WORKER -> USER).
+     * Deletes Employee entity if role changes from WORKER to USER.
+     *
+     * @param username Username of the user to downgrade.
+     * @return Updated user DTO.
+     * @throws EntityNotFoundException if user does not exist.
+     */
     @Override
     public UserDto decreaseRole(String username) {
         User user = userRepository.findUserByUsername(username).orElseThrow(
@@ -85,11 +116,9 @@ public class UserServiceImpl implements UserService {
             default -> {
                 user.setRole(UserRole.USER);
                 employeeRepository.findByUserId(
-                        user.getId())
+                                user.getId())
                         .ifPresent(
-                                employee -> employeeRepository
-                                        .deleteById(employee
-                                                .getId())
+                                employee -> employeeRepository.deleteById(employee.getId())
                         );
             }
         }
@@ -99,6 +128,14 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    /**
+     * @brief Sets the city for the specified user.
+     *
+     * @param username Username of the user.
+     * @param cityName Name of the city to assign.
+     * @return Confirmation message.
+     * @throws EntityNotFoundException if user or city does not exist.
+     */
     @Override
     public String setCity(String username, String cityName) {
         City city = cityRepository.findByName(cityName).orElseThrow(
@@ -111,6 +148,12 @@ public class UserServiceImpl implements UserService {
         return city.getName() + " from " + city.getCountry() + " added to " + user.getUsername();
     }
 
+    /**
+     * @brief Retrieves all users with pagination.
+     *
+     * @param pageable Pageable parameters.
+     * @return List of user DTOs.
+     */
     @Override
     public List<UserDto> findAll(Pageable pageable) {
         return userRepository.findAll(pageable).stream()
@@ -118,6 +161,12 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    /**
+     * @brief Builds a User entity from registration data.
+     *
+     * @param userRegisterRequest Registration data.
+     * @return New User entity.
+     */
     private User getUser(UserRegisterRequest userRegisterRequest) {
         User user = new User();
         user.setUsername(userRegisterRequest.getUsername());
@@ -132,6 +181,12 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * @brief Checks if a user with the same email already exists.
+     *
+     * @param userRegisterRequest Registration data.
+     * @throws RegistrationException if user with email exists.
+     */
     private void checkIfUserExist(UserRegisterRequest userRegisterRequest) {
         if (userRepository.findUserByEmail(userRegisterRequest.getEmail()).isPresent()) {
             throw new RegistrationException("Unable to complete registration");

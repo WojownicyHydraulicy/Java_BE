@@ -11,6 +11,10 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Utility class for creating and validating JSON Web Tokens (JWT).
+ * Uses the secret key and expiration time injected from application properties.
+ */
 @Configuration
 public class JwtUtil {
     @Value("${jwt.expiration}")
@@ -18,10 +22,22 @@ public class JwtUtil {
 
     private Key secret;
 
+    /**
+     * Constructs JwtUtil with the secret key used to sign JWTs.
+     *
+     * @param secretString the secret key as a string
+     */
     public JwtUtil(@Value("${jwt.secret}") String secretString) {
         secret = Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * Generates a JWT token with the given email as a claim.
+     * The token includes an expiration time based on configured expiration property.
+     *
+     * @param email the email to include in the token claims
+     * @return generated JWT token as a String
+     */
     public String generateToken(String email) {
         return Jwts.builder()
                 .claim("email", email)
@@ -31,6 +47,12 @@ public class JwtUtil {
                 .compact();
     }
 
+    /**
+     * Validates if the JWT token is well-formed, signed correctly and not expired.
+     *
+     * @param token the JWT token string to validate
+     * @return true if the token is valid, false otherwise
+     */
     public boolean isValidToken(String token) {
         Jws<Claims> claimsJws = Jwts.parser()
                 .setSigningKey(secret)
@@ -40,11 +62,24 @@ public class JwtUtil {
         return !claimsJws.getBody().getExpiration().before(new Date());
     }
 
+    /**
+     * Extracts the email claim from the given JWT token.
+     *
+     * @param token the JWT token string
+     * @return the email contained in the token claims
+     */
     public String getEmail(String token) {
-        //  return getClaim(token, Claims::getSubject);
         return getClaim(token, claims -> claims.get("email", String.class));
     }
 
+    /**
+     * Helper method to extract a claim from the token using a function.
+     *
+     * @param <T> the type of the claim to extract
+     * @param token the JWT token string
+     * @param claimsTFunction function extracting the claim from Claims
+     * @return the extracted claim of type T
+     */
     private <T> T getClaim(String token, Function<Claims, T> claimsTFunction) {
         Claims claims = Jwts.parser()
                 .setSigningKey(secret)
