@@ -4,10 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.bartoszwojcik.hydropol.annotation.FieldMatch;
+import org.bartoszwojcik.hydropol.annotation.ValidPassword;
 import org.hibernate.validator.constraints.Length;
 
 @Data
-@FieldMatch(first = "password", second = "repeatPassword",
+@FieldMatch(first = "password", second = "confirmPassword",
         message = "The password fields must match")
 public class UserRegisterRequest {
     @NotBlank
@@ -23,6 +24,7 @@ public class UserRegisterRequest {
     @Email
     private String email;
     @NotBlank
+    @ValidPassword
     private String password;
     @NotBlank
     private String confirmPassword;
